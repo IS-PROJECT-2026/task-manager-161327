@@ -76,6 +76,7 @@ function getFutureStr(days) {
 // ----- State (for UI only) -----
 let currentFilter = 'all';
 let searchTerm = '';
+let editingId = null;
 
 // ----- DOM Refs -----
 const taskListEl = document.getElementById('taskList');
@@ -172,12 +173,12 @@ function renderTasks() {
                     </div>
                 </div>
                 <div class="task-actions">
-                    <button style="opacity:0.3;cursor:default;" title="Edit (UI only)">
-                        <i class="fas fa-pen"></i>
-                    </button>
-                    <button style="opacity:0.3;cursor:default;" title="Delete (UI only)">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                        <button data-action="edit" title="Edit task">
+                             <i class="fas fa-pen"></i>
+                         </button>
+                         <button style="opacity:0.3;cursor:default;" title="Delete (coming soon)">
+                         <i class="fas fa-trash"></i>
+                        </button>
                 </div>
             </div>
         `;
@@ -213,12 +214,19 @@ function toggleTask(id) {
 
 // Toggle task via click on check button
 taskListEl.addEventListener('click', (e) => {
-    const btn = e.target.closest('.task-check');
+    const btn = e.target.closest('button');
     if (!btn) return;
     const item = btn.closest('.task-item');
     if (!item) return;
     const id = Number(item.dataset.id);
-    toggleTask(id);
+
+    const action = btn.dataset.action;
+    if (action === 'toggle') {
+        toggleTask(id);
+    } else if (action === 'edit') {
+        const task = tasks.find(t => t.id === id);
+        if (task) openModal(task);
+    }
 });
 
 // Filter buttons
@@ -265,11 +273,7 @@ document.addEventListener('keydown', (e) => {
         searchInput.focus();
     }
 });
-
-// ============================================
-// MODAL: PURE DESIGN – NO LOGIC
-// Just open/close for visual demo
-// ============================================
+ // modal 
 const modal = document.getElementById('taskModal');
 const modalClose = document.getElementById('modalClose');
 const modalCancel = document.getElementById('modalCancel');
@@ -277,10 +281,26 @@ const addTaskBtn = document.getElementById('addTaskBtn');
 const emptyAddBtn = document.getElementById('emptyAddBtn');
 
 
-function openModal() {
-  
+function openModal(task = null) {
     taskForm.reset();
-    taskDueInput.value = getTodayStr();  // default to today
+    editingId = null;
+
+    if (task) {
+        // Edit mode
+        editingId = task.id;
+        document.getElementById('modalTitle').textContent = 'Edit Task';
+        document.getElementById('modalSubmit').innerHTML = '<i class="fas fa-pen"></i> Update Task';
+        taskTitleInput.value = task.title;
+        taskDescInput.value = task.description;
+        taskDueInput.value = task.due;
+        taskPriorityInput.value = task.priority;
+        taskTagInput.value = task.tag;
+    } else {
+        // Add mode
+        document.getElementById('modalTitle').textContent = 'Create New Task';
+        document.getElementById('modalSubmit').innerHTML = '<i class="fas fa-plus"></i> Create Task';
+        taskDueInput.value = getTodayStr(); // default today
+    }
     modal.classList.add('active');
 }
 
@@ -297,7 +317,7 @@ modal.addEventListener('click', (e) => {
 });
 
 
-// ----- Form submit: Add Task -----
+// ----- Form submit: Add Task and edit task -----
 taskForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -307,17 +327,30 @@ taskForm.addEventListener('submit', (e) => {
         return;
     }
 
-    const newTask = {
-        id: Date.now(),
+    const data = {
         title: title,
         description: taskDescInput.value.trim(),
         due: taskDueInput.value || getTodayStr(),
         priority: taskPriorityInput.value,
         tag: taskTagInput.value,
-        completed: false,
     };
 
-    tasks.push(newTask);
+    if (editingId !== null) {
+        // ----- Update -----
+        const index = tasks.findIndex(t => t.id === editingId);
+        if (index !== -1) {
+            tasks[index] = { ...tasks[index], ...data };
+        }
+    } else {
+        // ----- Add -----
+        const newTask = {
+            id: Date.now(),
+            ...data,
+            completed: false,
+        };
+        tasks.push(newTask);
+    }
+
     renderTasks();
     closeModal();
     taskForm.reset();
