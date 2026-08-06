@@ -1,6 +1,6 @@
 
 // ----- DUMMY DATA (static) -----
-const tasks = [
+let tasks = [
     {
         id: 1,
         title: 'Design new dashboard mockups',
@@ -89,6 +89,14 @@ const searchInput = document.getElementById('searchInput');
 const filterBtns = document.querySelectorAll('.filter-btn');
 const menuToggle = document.getElementById('menuToggle');
 const sidebar = document.getElementById('sidebar');
+
+// ----- Modal Form Refs -----
+const taskForm = document.getElementById('taskForm');
+const taskTitleInput = document.getElementById('taskTitle');
+const taskDescInput = document.getElementById('taskDesc');
+const taskDueInput = document.getElementById('taskDue');
+const taskPriorityInput = document.getElementById('taskPriority');
+const taskTagInput = document.getElementById('taskTag');
 
 // ----- Render Function (pure display) -----
 function renderTasks() {
@@ -267,9 +275,12 @@ const modalClose = document.getElementById('modalClose');
 const modalCancel = document.getElementById('modalCancel');
 const addTaskBtn = document.getElementById('addTaskBtn');
 const emptyAddBtn = document.getElementById('emptyAddBtn');
-const modalSubmit = document.getElementById('modalSubmit');
+
 
 function openModal() {
+  
+    taskForm.reset();
+    taskDueInput.value = getTodayStr();  // default to today
     modal.classList.add('active');
 }
 
@@ -285,11 +296,31 @@ modal.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
 });
 
-// Submit button just closes the modal (no save)
-modalSubmit.addEventListener('click', () => {
+
+// ----- Form submit: Add Task -----
+taskForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const title = taskTitleInput.value.trim();
+    if (!title) {
+        alert('Please enter a task title.');
+        return;
+    }
+
+    const newTask = {
+        id: Date.now(),
+        title: title,
+        description: taskDescInput.value.trim(),
+        due: taskDueInput.value || getTodayStr(),
+        priority: taskPriorityInput.value,
+        tag: taskTagInput.value,
+        completed: false,
+    };
+
+    tasks.push(newTask);
+    renderTasks();
     closeModal();
-    // No CRUD – just UI feedback
-    alert('✨ Task would be created here (UI demo – no save)');
+    taskForm.reset();
 });
 
 // Escape key closes modal
