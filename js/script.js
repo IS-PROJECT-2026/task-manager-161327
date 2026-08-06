@@ -3,7 +3,7 @@
 let tasks = [
     {
         id: 1,
-        title: 'Design new dashboard frames',
+        title: 'Design new dashboard interfaces',
         description: 'Figma handoff for the v2.0 release',
         due: getTodayStr(),
         priority: 'high',
@@ -91,6 +91,8 @@ const filterBtns = document.querySelectorAll('.filter-btn');
 const menuToggle = document.getElementById('menuToggle');
 const sidebar = document.getElementById('sidebar');
 
+
+
 // ----- Modal Form Refs -----
 const taskForm = document.getElementById('taskForm');
 const taskTitleInput = document.getElementById('taskTitle');
@@ -176,9 +178,9 @@ function renderTasks() {
                         <button data-action="edit" title="Edit task">
                              <i class="fas fa-pen"></i>
                          </button>
-                         <button style="opacity:0.3;cursor:default;" title="Delete (coming soon)">
-                         <i class="fas fa-trash"></i>
-                        </button>
+                        <button data-action="delete" title="Delete task">
+                             <i class="fas fa-trash"></i>
+                         </button>
                 </div>
             </div>
         `;
@@ -210,6 +212,12 @@ function toggleTask(id) {
     }
 }
 
+function deleteTask(id) {
+    if (confirm('Are you sure you want to delete this task?')) {
+        tasks = tasks.filter(task => task.id !== id);
+        renderTasks();
+    }
+}
 // ----- Event Listeners -----
 
 // Toggle task via click on check button
@@ -226,6 +234,8 @@ taskListEl.addEventListener('click', (e) => {
     } else if (action === 'edit') {
         const task = tasks.find(t => t.id === id);
         if (task) openModal(task);
+    } else if (action === 'delete') {
+        deleteTask(id);
     }
 });
 
@@ -308,8 +318,8 @@ function closeModal() {
     modal.classList.remove('active');
 }
 
-addTaskBtn.addEventListener('click', openModal);
-emptyAddBtn.addEventListener('click', openModal);
+addTaskBtn.addEventListener('click', () => openModal(null));
+emptyAddBtn.addEventListener('click', () => openModal(null));
 modalClose.addEventListener('click', closeModal);
 modalCancel.addEventListener('click', closeModal);
 modal.addEventListener('click', (e) => {
