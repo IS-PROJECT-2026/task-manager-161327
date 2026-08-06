@@ -3,7 +3,7 @@
 let tasks = [
     {
         id: 1,
-        title: 'Design new dashboard mockups',
+        title: 'Design new dashboard frames',
         description: 'Figma handoff for the v2.0 release',
         due: getTodayStr(),
         priority: 'high',
