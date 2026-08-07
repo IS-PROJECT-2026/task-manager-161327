@@ -1,61 +1,28 @@
 
-// ----- DUMMY DATA (static) -----
-let tasks = [
-    {
-        id: 1,
-        title: 'Design new dashboard interfaces',
-        description: 'Figma handoff for the v2.0 release',
-        due: getTodayStr(),
-        priority: 'high',
-        tag: 'work',
-        completed: false,
-    },
-    {
-        id: 2,
-        title: 'Review pull requests',
-        description: 'Check team PRs before merge',
-        due: getTodayStr(),
-        priority: 'medium',
-        tag: 'work',
-        completed: false,
-    },
-    {
-        id: 3,
-        title: 'Gym session',
-        description: 'Leg day 💪',
-        due: getTodayStr(),
-        priority: 'low',
-        tag: 'health',
-        completed: false,
-    },
-    {
-        id: 4,
-        title: 'Weekly team sync',
-        description: 'Standup meeting at 10am',
-        due: getTomorrowStr(),
-        priority: 'medium',
-        tag: 'work',
-        completed: false,
-    },
-    {
-        id: 5,
-        title: 'Read "Atomic Habits"',
-        description: 'Chapters 4–6',
-        due: getTomorrowStr(),
-        priority: 'low',
-        tag: 'study',
-        completed: true,
-    },
-    {
-        id: 6,
-        title: 'Prepare presentation',
-        description: 'Q3 board meeting slides',
-        due: getFutureStr(3),
-        priority: 'high',
-        tag: 'work',
-        completed: false,
-    },
-];
+
+let tasks = loadTasks();
+saveTasks();
+
+function saveTasks() {
+    localStorage.setItem('taskflow_tasks', JSON.stringify(tasks));
+}
+
+function loadTasks() {
+    const stored = localStorage.getItem('taskflow_tasks');
+    if (stored) {
+        return JSON.parse(stored);
+    } else {
+     
+        return [
+            { id: 1, title: 'Design new dashboard mockups', description: 'Figma handoff for the v2.0 release', due: getTodayStr(), priority: 'high', tag: 'work', completed: false },
+            { id: 2, title: 'Review pull requests', description: 'Check team PRs before merge', due: getTodayStr(), priority: 'medium', tag: 'work', completed: false },
+            { id: 3, title: 'Gym session', description: 'Leg day ', due: getTodayStr(), priority: 'low', tag: 'health', completed: false },
+            { id: 4, title: 'Weekly team sync', description: 'Standup meeting at 10am', due: getTomorrowStr(), priority: 'medium', tag: 'work', completed: false },
+            { id: 5, title: 'Read "Atomic Habits"', description: 'Chapters 4–6', due: getTomorrowStr(), priority: 'low', tag: 'study', completed: true },
+            { id: 6, title: 'Prepare presentation', description: 'Q3 board meeting slides', due: getFutureStr(3), priority: 'high', tag: 'work', completed: false },
+        ];
+    }
+}
 
 // ----- Helper Date Functions -----
 function getTodayStr() {
@@ -72,6 +39,33 @@ function getFutureStr(days) {
     d.setDate(d.getDate() + days);
     return d.toISOString().split('T')[0];
 }
+
+
+function loadProfile() {
+    const stored = localStorage.getItem('taskflow_profile');
+    if (stored) {
+        return JSON.parse(stored);
+    } else {
+        return { name: 'Alex River', role: 'Productivity Lead' };
+    }
+}
+
+function saveProfile(profile) {
+    localStorage.setItem('taskflow_profile', JSON.stringify(profile));
+}
+
+// Apply profile to UI
+function applyProfile() {
+    const profile = loadProfile();
+    document.getElementById('userName').textContent = profile.name;
+    document.getElementById('userRole').textContent = profile.role;
+    // Update avatar (optional)
+    const avatar = document.getElementById('userAvatar');
+    avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name)}&background=7C3AED&color=fff&size=40`;
+}
+
+
+applyProfile();
 
 // ----- State (for UI only) -----
 let currentFilter = 'all';
@@ -100,6 +94,47 @@ const taskDescInput = document.getElementById('taskDesc');
 const taskDueInput = document.getElementById('taskDue');
 const taskPriorityInput = document.getElementById('taskPriority');
 const taskTagInput = document.getElementById('taskTag');
+
+
+const profileModal = document.getElementById('profileModal');
+const profileModalClose = document.getElementById('profileModalClose');
+const profileModalCancel = document.getElementById('profileModalCancel');
+const editProfileBtn = document.getElementById('editProfileBtn');
+const profileForm = document.getElementById('profileForm');
+const profileNameInput = document.getElementById('profileName');
+const profileRoleInput = document.getElementById('profileRole');
+
+function openProfileModal() {
+    const profile = loadProfile();
+    profileNameInput.value = profile.name;
+    profileRoleInput.value = profile.role;
+    profileModal.classList.add('active');
+}
+
+function closeProfileModal() {
+    profileModal.classList.remove('active');
+}
+
+editProfileBtn.addEventListener('click', openProfileModal);
+profileModalClose.addEventListener('click', closeProfileModal);
+profileModalCancel.addEventListener('click', closeProfileModal);
+profileModal.addEventListener('click', (e) => {
+    if (e.target === profileModal) closeProfileModal();
+});
+
+profileForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = profileNameInput.value.trim();
+    const role = profileRoleInput.value.trim() || 'User';
+    if (!name) {
+        alert('Please enter your name.');
+        return;
+    }
+    const profile = { name, role };
+    saveProfile(profile);
+    applyProfile();
+    closeProfileModal();
+});
 
 // ----- Render Function (pure display) -----
 function renderTasks() {
@@ -208,6 +243,7 @@ function toggleTask(id) {
     const task = tasks.find(t => t.id === id);
     if (task) {
         task.completed = !task.completed;
+         saveTasks()
         renderTasks(); // re-render
     }
 }
@@ -215,6 +251,7 @@ function toggleTask(id) {
 function deleteTask(id) {
     if (confirm('Are you sure you want to delete this task?')) {
         tasks = tasks.filter(task => task.id !== id);
+         saveTasks()
         renderTasks();
     }
 }
@@ -351,14 +388,16 @@ taskForm.addEventListener('submit', (e) => {
         if (index !== -1) {
             tasks[index] = { ...tasks[index], ...data };
         }
+        saveTasks();   
     } else {
-        // ----- Add -----
+    
         const newTask = {
             id: Date.now(),
             ...data,
             completed: false,
         };
         tasks.push(newTask);
+        saveTasks();   
     }
 
     renderTasks();
