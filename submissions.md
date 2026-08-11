@@ -67,7 +67,7 @@
 
 ![Branching strategy diagram showing feature style docs and chore branches merging into main](assets/images/branching_architecture.png)
 
-**Caption:** The project followed an issue-based branching strategy, where each feature and documentation task was developed in its own branch using conventional naming patterns such as `feat/`, `style/`, `docs/`, and `chore/` before being merged into the `main` branch through Pull Requests.
+* **Caption:** The project followed an issue-based branching strategy, where each feature and documentation task was developed in its own branch using conventional naming patterns such as `feat/`, `style/`, `docs/`, and `chore/` before being merged into the `main` branch through Pull Requests.
 
 
 ---
@@ -87,7 +87,7 @@ The project demonstrates three separate merge conflicts, each caused by a differ
 
 ### Conflict 1 — Same Lines Modified Differently
 
-**What cause did you use?** Same lines modified differently.
+* **What cause did you use?** Same lines modified differently.
 
 
 
@@ -113,9 +113,7 @@ The project demonstrates three separate merge conflicts, each caused by a differ
 
 ---
 
-* **Why does this cause trigger a conflict?**
-
-This was an add/add conflict because both branches independently created a file named conflict2-demo.txt from the same common starting point. Branch A created the file with the content “This file was created by branch A.”, while Branch B created the same file with the content “This file was created by branch B.” Git could not automatically determine which version of the newly added file should be retained, so it stopped the merge and required manual resolution.
+* **Why does this cause trigger a conflict?** This was an add/add conflict because both branches independently created a file named conflict2-demo.txt from the same common starting point. Branch A created the file with the content “This file was created by branch A.”, while Branch B created the same file with the content “This file was created by branch B.” Git could not automatically determine which version of the newly added file should be retained, so it stopped the merge and required manual resolution.
 
 ![Visual Studio Code editor displaying native Git conflict markers in js script js file for competing task title changes](evidence/conflict_evidence2.png)
 
