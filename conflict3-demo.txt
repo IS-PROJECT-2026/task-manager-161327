@@ -1,1 +1,1 @@
-This file is being used to demonstrate a Git delete-versus-modify conflict.
+This file has been modified on the conflict demonstration branch.
