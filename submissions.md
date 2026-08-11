@@ -113,13 +113,9 @@ The project demonstrates three separate merge conflicts, each caused by a differ
 
 ---
 
-### Conflict 2 — Both Branches Added the Same File
-**What cause did you use?** Add/add conflict.
+**Why does this cause trigger a conflict?**
 
-**Branches: conflict-2-add-a and conflict-2-add-b**
-
-**Why does this cause trigger a conflict?** This was an add/add conflict because both branches independently created a file named conflict2-demo.txt from the same common starting point. Branch A created the file with the content “This file was created by branch A.”, while Branch B created the same file with the content “This file was created by branch B.” Git could not automatically determine which version of the newly added file should be retained, so it stopped the merge and required manual resolution.
----
+This was an add/add conflict because both branches independently created a file named conflict2-demo.txt from the same common starting point. Branch A created the file with the content “This file was created by branch A.”, while Branch B created the same file with the content “This file was created by branch B.” Git could not automatically determine which version of the newly added file should be retained, so it stopped the merge and required manual resolution.
 
 ![Visual Studio Code editor displaying native Git conflict markers in js script js file for competing task title changes](evidence/conflict_evidence2.png)
 
