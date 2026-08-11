@@ -52,14 +52,14 @@
 ### A. Milestones and Issues
 ![GitHub milestone panel showing Task Management Features issues grouped under a milestone](assets/images/milestone.png)
 
-**Caption:** The **Task Management Features** milestone organized the application's core features into separate GitHub issues for adding, editing, deleting, and marking tasks as completed, making development progress easy to track.
+* **Caption:** The **Task Management Features** milestone organized the application's core features into separate GitHub issues for adding, editing, deleting, and marking tasks as completed, making development progress easy to track.
 
 ---
 
 ### B. Project Board
 ![Kanban style GitHub project board with columns To Do In Progress and Done and cards representing project tasks](assets/images/projectboard.png)
 
-**Caption:** GitHub Project Board demonstrating task progression across the To Do, In Progress, and Done columns. Most of the task has being completed at this particular point in time but two remained one in progress as the submissions file was being updated and  the  one  in the to be done stage as the live system was to be tested  again if it were live because  some changes were m,ade
+* **Caption:** GitHub Project Board demonstrating task progression across the To Do, In Progress, and Done columns. Most of the task has being completed at this particular point in time but two remained one in progress as the submissions file was being updated and  the  one  in the to be done stage as the live system was to be tested  again if it were live because  some changes were m,ade
 
 ---
 
@@ -76,7 +76,7 @@
 
 ![GitHub Pull Request for delete task functionality linked to issue number 6 showing merge traceability](assets/images/pullrequests.png)
 
-**Caption:** This Pull Request implements the **Delete Task Functionality** feature and is linked to **Issue #6** using the `Closes #6` keyword. This demonstrates traceability from issue creation, feature development, and Pull Request review to the final merge into the `main` branch.
+* **Caption:** This Pull Request implements the **Delete Task Functionality** feature and is linked to **Issue #6** using the `Closes #6` keyword. This demonstrates traceability from issue creation, feature development, and Pull Request review to the final merge into the `main` branch.
 
 
 ---
@@ -113,25 +113,25 @@ The project demonstrates three separate merge conflicts, each caused by a differ
 
 ---
 
-**Why does this cause trigger a conflict?**
+* **Why does this cause trigger a conflict?**
 
 This was an add/add conflict because both branches independently created a file named conflict2-demo.txt from the same common starting point. Branch A created the file with the content “This file was created by branch A.”, while Branch B created the same file with the content “This file was created by branch B.” Git could not automatically determine which version of the newly added file should be retained, so it stopped the merge and required manual resolution.
 
 ![Visual Studio Code editor displaying native Git conflict markers in js script js file for competing task title changes](evidence/conflict_evidence2.png)
 
 
-**Caption**: The add/add conflict was generated when conflict-2-add-a was merged into conflict-2-add-b. Both branches had independently created conflict2-demo.txt with different contents. Git displayed the competing versions using conflict markers, allowing the conflict to be identified and manually resolved.
+* **Caption**: The add/add conflict was generated when conflict-2-add-a was merged into conflict-2-add-b. Both branches had independently created conflict2-demo.txt with different contents. Git displayed the competing versions using conflict markers, allowing the conflict to be identified and manually resolved.
 
 ---
 
 
 ### Conflict 3 — Modify/Delete Conflict
 
-**What cause did you use?** One branch modified a file while another branch deleted it.
+* **What cause did you use?** One branch modified a file while another branch deleted it.
 
-**Branches:** `conflict-3-delete` and `conflict-3-modify`
+* **Branches:** `conflict-3-delete` and `conflict-3-modify`
 
-**Why does this cause trigger a conflict?** `conflict-3-delete` deleted `conflict3-demo.txt`, while `conflict-3-modify` modified the same file. Git could not automatically determine whether the file should be deleted or retained, so it stopped the merge and required a manual resolution.
+* **Why does this cause trigger a conflict?** `conflict-3-delete` deleted `conflict3-demo.txt`, while `conflict-3-modify` modified the same file. Git could not automatically determine whether the file should be deleted or retained, so it stopped the merge and required a manual resolution.
 
  
  ![evidence-3](evidence/conflict-evidence3.png)
