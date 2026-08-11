@@ -89,21 +89,25 @@ The project demonstrates three separate merge conflicts, each caused by a differ
 
 **What cause did you use?** Same lines modified differently.
 
-#### Step 1: Generating the Clash
-    ![Terminal screenshot showing a Git merge conflict during branch merge with error details and commands](assets/images/terminal1-conflict.png)
 
+
+#### Step 1: Generating the Clash
+![Conflict1-clash](assets/images/terminal1-conflict.png)
 
 * **Caption:** A merge conflict occurred when the `feat/7-mark-task-completed` branch attempted to merge changes from `main`. Both branches contained different modifications to the same line in `js/script.js`, specifically the task title field in the dummy task data. Git detected the conflicting changes and stopped the merge process, requiring manual conflict resolution.
 
+---
 #### Step 2: Inside the Code Editor (Native Conflict Markers)
 
 ![Visual Studio Code editor displaying native Git conflict markers in js script js file for competing task title changes](evidence/conflict_evidence1.png)
 
 * **Caption:** Visual Studio Code displayed the native Git conflict markers (`<<<<<<< HEAD`, `=======`, and `>>>>>>>`) showing the competing changes from the two branches. I reviewed the alternatives and selected the appropriate final version before completing the resolution.
 
-#### Step 3: Resolution & Clean Merge
+---
 
-[mergeresolution for conflict 1](assets/images/merge_resolution.png)
+#### Step 3: Resolution & Clean Merge
+![merge-conflict resolution](assets/images/merge_resolution.png)
+
 
 * **Caption:** The merge conflict was successfully resolved by preserving the main branch version containing the dashboard interface implementation. The final unified js/script.js file was merged successfully, maintaining the intended application functionality on the main branch.
 
@@ -115,13 +119,15 @@ The project demonstrates three separate merge conflicts, each caused by a differ
 **Branches: conflict-2-add-a and conflict-2-add-b**
 
 **Why does this cause trigger a conflict?** This was an add/add conflict because both branches independently created a file named conflict2-demo.txt from the same common starting point. Branch A created the file with the content “This file was created by branch A.”, while Branch B created the same file with the content “This file was created by branch B.” Git could not automatically determine which version of the newly added file should be retained, so it stopped the merge and required manual resolution.
+---
+
 ![Visual Studio Code editor displaying native Git conflict markers in js script js file for competing task title changes](evidence/conflict_evidence2.png)
 
-[Terminal screenshot showing a Git merge conflict during branch merge with error details and commands](assets/images/terminal2-conflict.png)
 
 **Caption**: The add/add conflict was generated when conflict-2-add-a was merged into conflict-2-add-b. Both branches had independently created conflict2-demo.txt with different contents. Git displayed the competing versions using conflict markers, allowing the conflict to be identified and manually resolved.
 
 ---
+
 
 ### Conflict 3 — Modify/Delete Conflict
 
@@ -131,6 +137,7 @@ The project demonstrates three separate merge conflicts, each caused by a differ
 
 **Why does this cause trigger a conflict?** `conflict-3-delete` deleted `conflict3-demo.txt`, while `conflict-3-modify` modified the same file. Git could not automatically determine whether the file should be deleted or retained, so it stopped the merge and required a manual resolution.
 
-[ CONFLICT 3 SCREENSHOT](evidence/conflict-evidence3.png)
+ 
+ ![evidence-3](evidence/conflict-evidence3.png)
 
-* **Caption:** Git reported a modify/delete conflict after `conflict-3-delete` was merged into `conflict-3-modify`. The terminal showed the file as **“deleted by them”**, indicating that one branch had deleted the file while the other had modified it. Unlike a content conflict, this was a file-operation conflict, so Git did not insert `<<<<<<<`, `=======`, and `>>>>>>>` markers into the file. I resolved the conflict by retaining the modified version and committed the resolution.
+* **Caption:** Git reported a modify/delete conflict after `conflict-3-delete` was merged into `conflict-3-modify`. Unlike a content conflict, this was a file-operation conflict, so Git did not insert `<<<<<<<`, `=======`, and `>>>>>>>` markers into the file. I resolved the conflict by retaining the modified version and committed the resolution.
